@@ -1,8 +1,9 @@
-import { parse } from "node-html-parser";
+import { parse, HTMLElement } from "node-html-parser";
 import fetch from "node-fetch";
 
 export interface FetchDecksOpts {
   username: string;
+  startPage?: number;
 }
 export interface Deck {
   id?: string;
@@ -11,13 +12,36 @@ export interface Deck {
   previewImageSrc?: string;
 }
 
-export async function fetchDecks(opts: FetchDecksOpts): Promise<Array<Deck>> {
-  const res = await fetch(`https://speakerdeck.com/${opts.username}`, {
+const ORIGIN = "https://speakerdeck.com";
+
+export async function fetchDecks(
+  opts: FetchDecksOpts,
+  decks: Array<Deck> = []
+): Promise<Array<Deck>> {
+  const page = opts.startPage ?? 1;
+  const params = new URLSearchParams({
+    page: page.toString(),
+  });
+  const res = await fetch(`${ORIGIN}/${opts.username}?${params}`, {
     method: "GET",
   });
+
   const html = await res.text();
   const root = parse(html);
 
+  const pagenationEl = root.querySelector(".pagination");
+  const pageItemEls = pagenationEl?.querySelectorAll(".page-item");
+  const lastPageItemEl = pageItemEls?.[pageItemEls.length - 1];
+
+  const lastPage = parseInt(lastPageItemEl?.text, 10) ?? 1;
+  return page < lastPage
+    ? await fetchDecks({ ...opts, startPage: page + 1 }, [
+        ...decks,
+        ...extractDeckData(root),
+      ])
+    : [...decks, ...extractDeckData(root)];
+}
+function extractDeckData(root: HTMLElement): Array<Deck> {
   const decksEl = root
     .querySelectorAll("div.container")[3]
     .querySelector("div");
