@@ -1,5 +1,5 @@
 {
-  "name": "speakerdeck-scraper",
+  "name": "@arayaryoma/speakerdeck-scraper",
   "version": "0.1.0",
   "main": "dist/index.js",
   "repository": "git@github.com:arayaryoma/speakerdeck-scraper.git",
