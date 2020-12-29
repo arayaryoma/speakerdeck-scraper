@@ -1,6 +1,6 @@
 {
   "name": "@arayaryoma/speakerdeck-scraper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "dist/index.js",
   "repository": "git@github.com:arayaryoma/speakerdeck-scraper.git",
   "author": "arayaryoma <r1o.ryoma.abe@gmail.com>",
