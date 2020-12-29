@@ -5,6 +5,11 @@
   "repository": "git@github.com:arayaryoma/speakerdeck-scraper.git",
   "author": "arayaryoma <r1o.ryoma.abe@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "prepare": "tsc",
+    "watch": "tsc --watch",
+    "type": "tsc --noEmit"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
