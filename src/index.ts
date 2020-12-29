@@ -1,7 +1,7 @@
-import cheerio from "cheerio";
-import fetch from "node-fetch";
+import { parse } from "node-html-parser";
 
-cheerio.load;
+import fetch from "node-fetch";
+import { promisify } from "util";
 
 export interface FetchDecksOpts {
   username: string;
@@ -15,15 +15,18 @@ export async function fetchDecks(opts: FetchDecksOpts): Promise<Array<Deck>> {
     method: "GET",
   });
   const html = await res.text();
-  const $ = cheerio.load(html);
-  const decks = $(
+  const root = parse(html);
+  const decks = root.querySelector(
     "div.container:nth-child(2) > div:nth-child(1) div"
-  ).children();
-  decks.map((deck) => {
-    console.log(deck);
-  });
+  );
+
+  debugger;
 
   return [];
 }
 
-fetchDecks({ username: "arayaryoma" }).then();
+const timeout = promisify(setTimeout);
+(async () => {
+  await fetchDecks({ username: "arayaryoma" });
+  await timeout(100000);
+})();
