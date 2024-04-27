@@ -31,5 +31,6 @@
   "dependencies": {
     "node-fetch": "^2.6.1",
     "node-html-parser": "^2.0.0"
-  }
+  },
+  "packageManager": "pnpm@9.0.6"
 }
